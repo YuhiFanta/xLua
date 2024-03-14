@@ -106,6 +106,20 @@ set ( LUA_SOCKET
     luasocket/udp.c 
 )
 
+#begin luasproto
+set (LUA_SPROTO_SRC
+    luasproto/sproto.c 
+    luasproto/lsproto.c 
+) 
+set_property (
+    SOURCE ${LUA_SPROTO_SRC}
+    APPEND
+    PROPERTY COMPILE_DEFINITIONS
+    LUA_LIB
+)
+set (THIRDPART_SRC ${THIRDPART_SRC} ${LUA_SPROTO_SRC})
+#end luasproto
+
 if ( WIN32 AND NOT CYGWIN )
     list (APPEND LUA_SOCKET luasocket/wsocket.c)
 else ( )
@@ -147,7 +161,7 @@ if (APPLE)
     if (IOS)
         set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD)")
         add_library(xlua STATIC
-           ${LUA_CORE}
+${LUA_CORE}
            ${LUA_LIB}
            ${LUA_SOCKET}
            ${XLUA_CORE}
@@ -160,7 +174,7 @@ if (APPLE)
            set(CMAKE_OSX_ARCHITECTURES arm64)
 
             add_library(xlua SHARED
-                ${LUA_CORE}
+${LUA_CORE}
                 ${LUA_LIB}
                 ${LUA_SOCKET}
                 ${XLUA_CORE}
@@ -169,7 +183,7 @@ if (APPLE)
         else ()
             set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD_64_BIT)")
             add_library(xlua MODULE
-                ${LUA_CORE}
+${LUA_CORE}
                 ${LUA_LIB}
                 ${LUA_SOCKET}
                 ${XLUA_CORE}
@@ -182,7 +196,7 @@ if (APPLE)
     endif ()
 elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Switch")
     add_library(xlua STATIC
-        ${LUA_CORE}
+${LUA_CORE}
         ${LUA_LIB}
         ${XLUA_CORE}
         ${THIRDPART_SRC}
@@ -190,7 +204,7 @@ elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Switch")
     target_compile_options(xlua PRIVATE -m64 -mcpu=cortex-a57+fp+simd+crypto+crc -fno-common -fno-short-enums -ffunction-sections -fdata-sections -fPIC -fms-extensions)
 else ( )
     add_library(xlua SHARED
-        ${LUA_CORE}
+${LUA_CORE}
         ${LUA_LIB}
         ${LUA_SOCKET}
         ${XLUA_CORE}
