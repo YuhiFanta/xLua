@@ -113,6 +113,9 @@ void luaD_seterrorobj (lua_State *L, int errcode, StkId oldtop) {
 
 
 l_noret luaD_throw (lua_State *L, int errcode) {
+  if (errcode != LUA_ERRRUN) {
+    luai_errevent(L, errcode);
+  }
   if (L->errorJmp) {  /* thread has an error handler? */
     L->errorJmp->status = errcode;  /* set status */
     LUAI_THROW(L, L->errorJmp);  /* jump to it */
@@ -845,6 +848,7 @@ LUA_API int lua_resume (lua_State *L, lua_State *from, int nargs,
     return resume_error(L, "C stack overflow", nargs);
   L->nCcalls++;
   luai_userstateresume(L, nargs);
+  luai_threadcall(L, from);
   api_checknelems(L, (L->status == LUA_OK) ? nargs + 1 : nargs);
   status = luaD_rawrunprotected(L, resume, &nargs);
    /* continue running after recoverable errors */
@@ -858,6 +862,7 @@ LUA_API int lua_resume (lua_State *L, lua_State *from, int nargs,
   }
   *nresults = (status == LUA_YIELD) ? L->ci->u2.nyield
                                     : cast_int(L->top.p - (L->ci->func.p + 1));
+  luai_threadret(from, L);
   lua_unlock(L);
   return status;
 }
