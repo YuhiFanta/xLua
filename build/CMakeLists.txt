@@ -161,7 +161,7 @@ if (APPLE)
     if (IOS)
         set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD)")
         add_library(xlua STATIC
-${LUA_CORE}
+           ${LUA_CORE}
            ${LUA_LIB}
            ${LUA_SOCKET}
            ${XLUA_CORE}
@@ -174,7 +174,7 @@ ${LUA_CORE}
            set(CMAKE_OSX_ARCHITECTURES arm64)
 
             add_library(xlua SHARED
-${LUA_CORE}
+                ${LUA_CORE}
                 ${LUA_LIB}
                 ${LUA_SOCKET}
                 ${XLUA_CORE}
@@ -183,7 +183,7 @@ ${LUA_CORE}
         else ()
             set(CMAKE_OSX_ARCHITECTURES "$(ARCHS_STANDARD_64_BIT)")
             add_library(xlua MODULE
-${LUA_CORE}
+                ${LUA_CORE}
                 ${LUA_LIB}
                 ${LUA_SOCKET}
                 ${XLUA_CORE}
@@ -196,7 +196,7 @@ ${LUA_CORE}
     endif ()
 elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Switch")
     add_library(xlua STATIC
-${LUA_CORE}
+        ${LUA_CORE}
         ${LUA_LIB}
         ${XLUA_CORE}
         ${THIRDPART_SRC}
@@ -204,7 +204,7 @@ ${LUA_CORE}
     target_compile_options(xlua PRIVATE -m64 -mcpu=cortex-a57+fp+simd+crypto+crc -fno-common -fno-short-enums -ffunction-sections -fdata-sections -fPIC -fms-extensions)
 else ( )
     add_library(xlua SHARED
-${LUA_CORE}
+        ${LUA_CORE}
         ${LUA_LIB}
         ${LUA_SOCKET}
         ${XLUA_CORE}
