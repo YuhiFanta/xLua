@@ -216,6 +216,10 @@ if ( WIN32 AND NOT CYGWIN )
     target_compile_definitions (xlua PRIVATE LUA_BUILD_AS_DLL)
 endif ( )
 
+if ( ANDROID )
+    target_compile_definitions (xlua PRIVATE LUA_USE_LINUX)
+endif ( )
+
 if (GC64 AND USING_LUAJIT)
     target_compile_definitions (xlua PRIVATE LUAJIT_ENABLE_GC64)
 endif ()
